@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 import { Camera, MapPin, Calendar, Package, ArrowLeft, Check, Upload, X } from 'lucide-react';
+import { supabase } from '../../lib/supabase';
 
 interface EnhancedAddProduceProps {
   onSubmit: (produceData: any) => void;
   onBack: () => void;
+  farmerId: string;
 }
 
-const EnhancedAddProduce: React.FC<EnhancedAddProduceProps> = ({ onSubmit, onBack }) => {
+const EnhancedAddProduce: React.FC<EnhancedAddProduceProps> = ({ onSubmit, onBack, farmerId }) => {
   const [formData, setFormData] = useState({
     name: '',
     variety: '',
     quantity: '',
-    unit: 'quintal',
+    unit: 'quintal' as 'kg' | 'quintal' | 'ton',
     expectedPrice: '',
     description: '',
     harvestDate: '',
@@ -21,6 +23,8 @@ const EnhancedAddProduce: React.FC<EnhancedAddProduceProps> = ({ onSubmit, onBac
 
   const [imagePreview, setImagePreview] = useState<string[]>([]);
   const [isDetectingLocation, setIsDetectingLocation] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   // Comprehensive crop list with categories
   const crops = [
@@ -111,21 +115,46 @@ const EnhancedAddProduce: React.FC<EnhancedAddProduceProps> = ({ onSubmit, onBac
     }, 2000);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!formData.name || !formData.quantity || !formData.expectedPrice || !formData.location) {
-      alert('कृपया सभी आवश्यक फ़ील्ड भरें / Please fill all required fields');
+      setError('कृपया सभी आवश्यक फ़ील्ड भरें / Please fill all required fields');
       return;
     }
-    
-    onSubmit({
-      ...formData,
-      quantity: parseFloat(formData.quantity),
-      basePrice: parseFloat(formData.expectedPrice),
-      status: 'active',
-      bids: []
-    });
+
+    setIsSubmitting(true);
+    setError(null);
+
+    try {
+      const { data, error: insertError } = await supabase
+        .from('produces')
+        .insert({
+          farmer_id: farmerId,
+          name: formData.name,
+          variety: formData.variety || null,
+          quantity: parseFloat(formData.quantity),
+          unit: formData.unit,
+          base_price: parseFloat(formData.expectedPrice),
+          current_price: parseFloat(formData.expectedPrice),
+          images: formData.images,
+          description: formData.description || null,
+          location: formData.location,
+          harvest_date: formData.harvestDate || null,
+          status: 'active'
+        })
+        .select()
+        .single();
+
+      if (insertError) throw insertError;
+
+      onSubmit(data);
+    } catch (err) {
+      console.error('Error adding produce:', err);
+      setError('फसल जोड़ने में त्रुटि / Error adding produce. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const isFormValid = () => {
@@ -383,18 +412,30 @@ const EnhancedAddProduce: React.FC<EnhancedAddProduceProps> = ({ onSubmit, onBac
           />
         </div>
 
+        {/* Error Message */}
+        {error && (
+          <div className="bg-red-50 border border-red-200 rounded-xl p-4">
+            <p className="text-red-800 text-sm font-medium">{error}</p>
+          </div>
+        )}
+
         {/* Submit Button */}
         <div className="sticky bottom-4 bg-white p-4 rounded-xl shadow-lg border border-gray-100">
           <button
             type="submit"
-            disabled={!isFormValid()}
+            disabled={!isFormValid() || isSubmitting}
             className={`w-full py-4 rounded-xl text-lg font-semibold transition-colors ${
-              isFormValid()
+              isFormValid() && !isSubmitting
                 ? 'bg-green-600 text-white hover:bg-green-700 shadow-lg'
                 : 'bg-gray-300 text-gray-500 cursor-not-allowed'
             }`}
           >
-            {isFormValid() ? (
+            {isSubmitting ? (
+              <div className="flex items-center justify-center space-x-2">
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                <span>जोड़ा जा रहा है... / Adding...</span>
+              </div>
+            ) : isFormValid() ? (
               <div className="flex items-center justify-center space-x-2">
                 <Check size={20} />
                 <span>फसल सूची में जोड़ें / Add to Listings</span>
@@ -403,8 +444,8 @@ const EnhancedAddProduce: React.FC<EnhancedAddProduceProps> = ({ onSubmit, onBac
               'कृपया सभी आवश्यक फ़ील्ड भरें'
             )}
           </button>
-          
-          {!isFormValid() && (
+
+          {!isFormValid() && !isSubmitting && (
             <p className="text-center text-sm text-gray-500 mt-2">
               * चिह्नित फ़ील्ड आवश्यक हैं
             </p>
