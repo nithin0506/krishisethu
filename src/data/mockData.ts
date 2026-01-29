@@ -101,6 +101,78 @@ export const mockMarketPrices: MarketPrice[] = [
     change: 75,
     trend: 'up',
     lastUpdated: new Date().toISOString()
+  },
+  {
+    id: '5',
+    produce: 'गेहूं (Wheat)',
+    mandi: 'Baramati APMC',
+    price: 2180,
+    change: 30,
+    trend: 'up',
+    lastUpdated: new Date().toISOString()
+  },
+  {
+    id: '6',
+    produce: 'गेहूं (Wheat)',
+    mandi: 'Nashik APMC',
+    price: 2320,
+    change: 80,
+    trend: 'up',
+    lastUpdated: new Date().toISOString()
+  },
+  {
+    id: '7',
+    produce: 'धान (Rice)',
+    mandi: 'Baramati APMC',
+    price: 1850,
+    change: -50,
+    trend: 'down',
+    lastUpdated: new Date().toISOString()
+  },
+  {
+    id: '8',
+    produce: 'धान (Rice)',
+    mandi: 'Mumbai APMC',
+    price: 1950,
+    change: 25,
+    trend: 'up',
+    lastUpdated: new Date().toISOString()
+  },
+  {
+    id: '9',
+    produce: 'प्याज (Onion)',
+    mandi: 'Pune APMC',
+    price: 1200,
+    change: 150,
+    trend: 'up',
+    lastUpdated: new Date().toISOString()
+  },
+  {
+    id: '10',
+    produce: 'प्याज (Onion)',
+    mandi: 'Nashik APMC',
+    price: 1100,
+    change: 100,
+    trend: 'up',
+    lastUpdated: new Date().toISOString()
+  },
+  {
+    id: '11',
+    produce: 'टमाटर (Tomato)',
+    mandi: 'Pune APMC',
+    price: 2500,
+    change: -200,
+    trend: 'down',
+    lastUpdated: new Date().toISOString()
+  },
+  {
+    id: '12',
+    produce: 'टमाटर (Tomato)',
+    mandi: 'Mumbai APMC',
+    price: 2800,
+    change: -100,
+    trend: 'down',
+    lastUpdated: new Date().toISOString()
   }
 ];
 
