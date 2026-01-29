@@ -112,7 +112,7 @@ export const mockTransactions: Transaction[] = [
     traderId: '2',
     amount: 115000,
     quantity: 50,
-    status: 'confirmed',
+    status: 'payment_initiated',
     timeline: [
       {
         id: 't1',
