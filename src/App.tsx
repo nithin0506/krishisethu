@@ -160,18 +160,10 @@ function App() {
             onViewTraders={() => setActiveTab('traders')}
           />
         ) : (
-          <div className="p-4 space-y-6">
-            <TraderDashboard
+          <TraderDashboard
             availableProduce={produces}
             myTransactions={mockTransactions}
-            />
-            <button
-              onClick={handleViewTransaction}
-              className="w-full bg-blue-600 text-white py-3 rounded-xl font-medium hover:bg-blue-700 transition-colors"
-            >
-              लेन-देन ट्रैक करें / Track Transaction
-            </button>
-          </div>
+          />
         );
       
       case 'market':

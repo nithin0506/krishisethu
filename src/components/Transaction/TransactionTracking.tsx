@@ -11,9 +11,7 @@ import {
   HandHeart,
   Banknote,
   Shield,
-  AlertCircle
   AlertCircle,
-  Shield,
   Download,
   Share2,
   Star,
@@ -70,28 +68,22 @@ const TransactionTracking: React.FC<TransactionTrackingProps> = ({
       title: 'सौदा स्वीकार',
       titleEn: 'Deal Accepted',
       description: 'किसान ने आपकी बोली स्वीकार की है',
-      descriptionEn: 'Farmer has accepted your bid',
+      descriptionEn: 'Farmer accepted your bid',
       icon: HandHeart,
-      completed: ['deal_accepted', 'produce_collected', 'payment_initiated', 'payment_completed', 'completed'].includes(transaction.status),
+      completed: true,
       timestamp: '2024-01-15 10:30 AM',
       details: [
         'बोली राशि: ₹115,000',
         'मात्रा: 50 क्विंटल',
         'फसल: गेहूं (HD-2967)'
       ]
-      description: 'किसान ने आपकी बोली स्वीकार की',
-      descriptionEn: 'Farmer accepted your bid',
-      icon: CheckCircle,
-      completed: true,
-      timestamp: '2024-01-15 10:30 AM',
-      details: 'Deal confirmed at ₹2,300 per quintal for 50 quintals'
     },
     {
       id: 'produce_collected',
       title: 'फसल एकत्रित',
       titleEn: 'Produce Collected',
       description: 'फसल की गुणवत्ता जांच और संग्रह पूर्ण',
-      descriptionEn: 'Quality check and collection completed',
+      descriptionEn: 'Quality check and produce collection',
       icon: Package,
       completed: ['produce_collected', 'payment_initiated', 'payment_completed', 'completed'].includes(transaction.status),
       timestamp: transaction.status !== 'deal_accepted' ? '2024-01-15 02:00 PM' : '',
@@ -100,12 +92,6 @@ const TransactionTracking: React.FC<TransactionTrackingProps> = ({
         'वजन सत्यापन: 50 क्विंटल',
         'संग्रह स्थान: खडकवासला'
       ]
-      description: 'फसल की गुणवत्ता जांच और संग्रह',
-      descriptionEn: 'Quality check and produce collection',
-      icon: Package,
-      completed: transaction.status !== 'pending',
-      timestamp: transaction.status !== 'pending' ? '2024-01-15 02:00 PM' : '',
-      details: 'Quality verified, 50 quintals collected from farm'
     },
     {
       id: 'payment_initiated',
@@ -143,33 +129,6 @@ const TransactionTracking: React.FC<TransactionTrackingProps> = ({
     step.id === transaction.status || 
     (transaction.status === 'completed' && step.id === 'payment_completed')
   );
-      completed: ['confirmed', 'in_transit', 'delivered', 'completed'].includes(transaction.status),
-      timestamp: ['confirmed', 'in_transit', 'delivered', 'completed'].includes(transaction.status) ? '2024-01-15 02:30 PM' : '',
-      details: 'Bank transfer initiated to farmer account'
-    },
-    {
-      id: 'in_transit',
-      title: 'ट्रांसपोर्ट',
-      titleEn: 'In Transit',
-      description: 'फसल ट्रांसपोर्ट में है',
-      descriptionEn: 'Produce is being transported',
-      icon: Truck,
-      completed: ['in_transit', 'delivered', 'completed'].includes(transaction.status),
-      timestamp: ['in_transit', 'delivered', 'completed'].includes(transaction.status) ? '2024-01-15 04:00 PM' : '',
-      details: 'Vehicle: MH 12 AB 1234, Driver: Ramesh Kumar'
-    },
-    {
-      id: 'payment_completed',
-      title: 'भुगतान पूर्ण',
-      titleEn: 'Payment Completed',
-      description: 'किसान को भुगतान पूरा',
-      descriptionEn: 'Payment completed to farmer',
-      icon: CheckCircle,
-      completed: ['delivered', 'completed'].includes(transaction.status),
-      timestamp: ['delivered', 'completed'].includes(transaction.status) ? '2024-01-15 06:00 PM' : '',
-      details: 'Full payment of ₹1,15,000 transferred successfully'
-    }
-  ];
 
   const paymentBreakdown = {
     produceValue: transaction.amount * 0.95,
@@ -212,20 +171,12 @@ const TransactionTracking: React.FC<TransactionTrackingProps> = ({
               <h3 className="text-xl font-bold">Transaction #{transaction.id.slice(0, 8)}</h3>
               <p className="text-blue-100 text-sm">Order ID: {transaction.id}</p>
             </div>
-            <div className={`px-3 py-1 rounded-full text-sm font-medium border ${getStatusColor(transaction.status)}`}>
             <div className={`px-4 py-2 rounded-full text-sm font-medium border ${getStatusColor(transaction.status)} bg-white`}>
               {getStatusText(transaction.status)}
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <div className="bg-gradient-to-r from-green-50 to-green-100 p-4 rounded-lg border border-green-200">
-              <p className="text-sm text-green-700 mb-1">कुल राशि / Total Amount</p>
-              <p className="text-xl font-bold text-green-800">₹{transaction.amount.toLocaleString()}</p>
-            </div>
-            <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-4 rounded-lg border border-blue-200">
-              <p className="text-sm text-blue-700 mb-1">मात्रा / Quantity</p>
-              <p className="text-xl font-bold text-blue-800">{transaction.quantity} क्विंटल</p>
             <div className="bg-blue-500 bg-opacity-50 p-4 rounded-xl">
               <div className="flex items-center space-x-2 mb-2">
                 <Rupee size={20} />
@@ -243,37 +194,6 @@ const TransactionTracking: React.FC<TransactionTrackingProps> = ({
           </div>
         </div>
 
-        {/* Deal Confirmation Card */}
-        <div className="bg-white rounded-xl shadow-md border border-gray-100 p-6">
-          <div className="flex items-center space-x-3 mb-4">
-            <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-              <HandHeart size={24} className="text-green-600" />
-            </div>
-            <div>
-              <h4 className="text-lg font-semibold text-gray-800">सौदा पुष्टि</h4>
-              <p className="text-sm text-gray-600">Deal Confirmation</p>
-            </div>
-          </div>
-          
-          <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-            <div className="grid grid-cols-2 gap-4 text-sm">
-              <div>
-                <p className="text-green-700 font-medium">किसान का नाम:</p>
-                <p className="text-green-800">राम कुमार</p>
-              </div>
-              <div>
-                <p className="text-green-700 font-medium">फसल:</p>
-                <p className="text-green-800">गेहूं (HD-2967)</p>
-              </div>
-              <div>
-                <p className="text-green-700 font-medium">सहमत मूल्य:</p>
-                <p className="text-green-800">₹2,300 प्रति क्विंटल</p>
-              </div>
-              <div>
-                <p className="text-green-700 font-medium">स्वीकृति समय:</p>
-                <p className="text-green-800">15 जन, 10:30 AM</p>
-              </div>
-            </div>
         {/* Deal Confirmation Details */}
         <div className="bg-white rounded-xl shadow-md border border-gray-100 p-6">
           <div className="flex items-center space-x-3 mb-4">
@@ -320,14 +240,6 @@ const TransactionTracking: React.FC<TransactionTrackingProps> = ({
 
         {/* Payment Status Timeline */}
         <div className="bg-white rounded-xl shadow-md border border-gray-100 p-6">
-          <div className="flex items-center space-x-3 mb-6">
-            <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-              <CreditCard size={24} className="text-blue-600" />
-            </div>
-            <div>
-              <h4 className="text-lg font-semibold text-gray-800">भुगतान स्थिति</h4>
-              <p className="text-sm text-gray-600">Payment Status Timeline</p>
-            </div>
           <div className="flex items-center justify-between mb-6">
             <div>
               <h4 className="text-lg font-semibold text-gray-800">भुगतान स्थिति / Payment Status</h4>
@@ -346,7 +258,6 @@ const TransactionTracking: React.FC<TransactionTrackingProps> = ({
               const Icon = step.icon;
               const isLast = index === paymentTimelineSteps.length - 1;
               const isActive = index === currentStepIndex;
-              const isPending = index > currentStepIndex;
               
               return (
                 <div key={step.id} className="flex items-start space-x-4">
@@ -356,7 +267,6 @@ const TransactionTracking: React.FC<TransactionTrackingProps> = ({
                         ? 'bg-green-600 text-white border-green-600' 
                         : isActive
                         ? 'bg-blue-600 text-white border-blue-600'
-                        : 'bg-gray-200 text-gray-500 border-gray-300'
                         : 'bg-gray-100 text-gray-400 border-gray-300'
                     }`}>
                       <Icon size={20} />
@@ -370,22 +280,6 @@ const TransactionTracking: React.FC<TransactionTrackingProps> = ({
                   
                   <div className="flex-1 pb-8">
                     <div className="flex items-center justify-between mb-2">
-                      <h5 className={`font-semibold ${
-                        step.completed ? 'text-gray-800' : 
-                        isActive ? 'text-blue-800' : 'text-gray-500'
-                      }`}>
-                        {step.title}
-                      </h5>
-                      {step.timestamp && (
-                        <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
-                          {step.timestamp}
-                        </span>
-                      )}
-                    </div>
-                    
-                    <p className={`text-sm mb-3 ${
-                      step.completed ? 'text-gray-600' : 
-                      isActive ? 'text-blue-700' : 'text-gray-400'
                       <div>
                         <h5 className={`font-semibold ${
                           step.completed ? 'text-gray-800' : 'text-gray-500'
@@ -417,28 +311,13 @@ const TransactionTracking: React.FC<TransactionTrackingProps> = ({
                       {step.description}
                     </p>
                     
-                    <p className={`text-xs mb-3 ${
-                      step.completed ? 'text-gray-500' : 
-                      isActive ? 'text-blue-600' : 'text-gray-400'
-                    }`}>
-                      {step.descriptionEn}
-                    </p>
-                    
-                    {step.completed && step.details && (
-                      <div className="bg-gray-50 rounded-lg p-3 space-y-1">
-                        {step.details.map((detail, idx) => (
-                          <p key={idx} className="text-xs text-gray-600">• {detail}</p>
-                        ))}
-                      </div>
-                    )}
-                    
-                    {isActive && !step.completed && (
-                      <div className="flex items-center space-x-2 text-blue-600">
-                        <Clock size={16} />
-                        <span className="text-sm font-medium">प्रगति में / In Progress</span>
                     {step.details && step.completed && (
                       <div className="bg-gray-50 p-3 rounded-lg">
-                        <p className="text-sm text-gray-700">{step.details}</p>
+                        <div className="space-y-1">
+                          {step.details.map((detail, idx) => (
+                            <p key={idx} className="text-xs text-gray-600">• {detail}</p>
+                          ))}
+                        </div>
                       </div>
                     )}
                   </div>
@@ -489,6 +368,9 @@ const TransactionTracking: React.FC<TransactionTrackingProps> = ({
             <p className="text-xs text-green-700 mt-1">
               आपका भुगतान एस्क्रो में सुरक्षित है। फसल की पुष्टि के बाद ही किसान को भुगतान होगा।
             </p>
+          </div>
+        </div>
+
         {showPaymentDetails && (
           <div className="bg-white rounded-xl shadow-md border border-gray-100 p-6">
             <h4 className="text-lg font-semibold text-gray-800 mb-4">भुगतान विवरण / Payment Breakdown</h4>
@@ -690,10 +572,6 @@ const TransactionTracking: React.FC<TransactionTrackingProps> = ({
               <AlertCircle size={20} className="text-yellow-600" />
             </div>
             <div className="flex-1">
-              <p className="font-medium text-yellow-800">सहायता चाहिए?</p>
-              <p className="text-sm text-yellow-700">
-                भुगतान या लेन-देन संबंधी कोई समस्या हो तो संपर्क करें
-              </p>
               <p className="font-medium text-yellow-800">सहायता चाहिए? / Need Help?</p>
               <p className="text-sm text-yellow-700">24/7 ग्राहक सहायता उपलब्ध</p>
             </div>
