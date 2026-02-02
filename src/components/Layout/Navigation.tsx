@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, TrendingUp, Plus, MessageCircle, User, Settings, Users } from 'lucide-react';
+import { Home, TrendingUp, Plus, MessageCircle, User, Settings, Users, Shield, AlertTriangle, Gift } from 'lucide-react';
 import { useLanguage } from '../../contexts/LanguageContext';
 
 interface NavigationProps {
@@ -28,7 +28,10 @@ const Navigation: React.FC<NavigationProps> = ({ activeTab, onTabChange, userTyp
 
   const adminTabs = [
     { id: 'dashboard', icon: Home, labelKey: 'nav.home' },
-    { id: 'verification', icon: Settings, labelKey: 'nav.profile' },
+    { id: 'verification', icon: Shield, labelKey: 'nav.verification' },
+    { id: 'disputes', icon: AlertTriangle, labelKey: 'nav.disputes' },
+    { id: 'prices', icon: TrendingUp, labelKey: 'nav.prices' },
+    { id: 'schemes', icon: Gift, labelKey: 'nav.schemes' }
   ];
 
   const tabs = userType === 'farmer' ? farmerTabs : userType === 'trader' ? traderTabs : adminTabs;

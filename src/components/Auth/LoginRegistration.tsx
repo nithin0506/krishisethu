@@ -3,7 +3,7 @@ import { Phone, User, Building, Shield } from 'lucide-react';
 import { useLanguage } from '../../contexts/LanguageContext';
 
 interface LoginRegistrationProps {
-  onLogin: (userType: 'farmer' | 'trader') => void;
+  onLogin: (userType: 'farmer' | 'trader' | 'admin') => void;
 }
 
 const LoginRegistration: React.FC<LoginRegistrationProps> = ({ onLogin }) => {
@@ -11,7 +11,7 @@ const LoginRegistration: React.FC<LoginRegistrationProps> = ({ onLogin }) => {
   const [step, setStep] = useState<'phone' | 'otp' | 'role'>('phone');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [otp, setOtp] = useState('');
-  const [selectedRole, setSelectedRole] = useState<'farmer' | 'trader' | ''>('');
+  const [selectedRole, setSelectedRole] = useState<'farmer' | 'trader' | 'admin' | ''>('');
 
   const handlePhoneSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -153,6 +153,29 @@ const LoginRegistration: React.FC<LoginRegistrationProps> = ({ onLogin }) => {
                 </div>
               </button>
 
+              <button
+                onClick={() => setSelectedRole('admin')}
+                className={`w-full p-6 rounded-xl border-2 transition-all duration-200 ${
+                  selectedRole === 'admin'
+                    ? 'border-purple-500 bg-purple-50 shadow-md'
+                    : 'border-gray-200 bg-white hover:border-purple-300'
+                }`}
+              >
+                <div className="flex items-center space-x-4">
+                  <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                    <Shield size={24} className="text-purple-600" />
+                  </div>
+                  <div className="text-left flex-1">
+                    <h3 className="text-lg font-semibold text-gray-800">Admin</h3>
+                    <p className="text-xs text-gray-500 mt-1">Platform Administrator</p>
+                  </div>
+                  {selectedRole === 'admin' && (
+                    <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center">
+                      <span className="text-white text-sm">✓</span>
+                    </div>
+                  )}
+                </div>
+              </button>
               <button
                 onClick={() => setSelectedRole('trader')}
                 className={`w-full p-6 rounded-xl border-2 transition-all duration-200 ${

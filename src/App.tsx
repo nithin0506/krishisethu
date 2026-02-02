@@ -14,6 +14,8 @@ import EnhancedChatInterface from './components/Chat/EnhancedChatInterface';
 import TransactionTracking from './components/Transaction/TransactionTracking';
 import GovernmentSchemes from './components/Government/GovernmentSchemes';
 import TraderListingsForFarmers from './components/Trader/TraderListingsForFarmers';
+import AdminDashboard from './components/Admin/AdminDashboard';
+import TraderDashboard from './components/Trader/TraderDashboard';
 import { 
   mockUsers, 
   mockProduce, 
@@ -45,7 +47,22 @@ function App() {
   };
 
   const handleLogin = (userType: 'farmer' | 'trader') => {
-    const user = mockUsers.find(u => u.type === userType) || mockUsers[0];
+    // Add admin user for testing
+    const adminUser = {
+      id: '550e8400-e29b-41d4-a716-446655440003',
+      name: 'Admin User',
+      phone: '+91-9876543213',
+      type: 'admin' as const,
+      location: 'System Admin',
+      verified: true
+    };
+    
+    let user;
+    if (userType === 'admin') {
+      user = adminUser;
+    } else {
+      user = mockUsers.find(u => u.type === userType) || mockUsers[0];
+    }
     setCurrentUser(user);
     setAppState('main');
   };
@@ -159,11 +176,13 @@ function App() {
             onViewSchemes={() => setActiveTab('schemes')}
             onViewTraders={() => setActiveTab('traders')}
           />
-        ) : (
+        ) : currentUser.type === 'trader' ? (
           <TraderDashboard
             availableProduce={produces}
             myTransactions={mockTransactions}
           />
+        ) : (
+          <AdminDashboard />
         );
       
       case 'market':
@@ -324,5 +343,28 @@ function App() {
     </LanguageProvider>
   );
 }
+
+// Add TraderDashboard component for missing functionality
+const TraderDashboard: React.FC<{ availableProduce: any[], myTransactions: any[] }> = ({ availableProduce, myTransactions }) => {
+  return (
+    <div className="p-4 space-y-6">
+      <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-6 text-white">
+        <h2 className="text-xl font-bold mb-1">नमस्ते व्यापारी!</h2>
+        <p className="text-blue-100 text-sm">Welcome Trader!</p>
+      </div>
+      
+      <div className="grid grid-cols-2 gap-4">
+        <div className="bg-white p-4 rounded-xl shadow-md">
+          <p className="text-2xl font-bold text-blue-600">{availableProduce.length}</p>
+          <p className="text-sm text-gray-600">Available Produce</p>
+        </div>
+        <div className="bg-white p-4 rounded-xl shadow-md">
+          <p className="text-2xl font-bold text-orange-600">{myTransactions.length}</p>
+          <p className="text-sm text-gray-600">My Transactions</p>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default App;

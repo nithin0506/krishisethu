@@ -30,10 +30,7 @@ interface TraderDashboardProps {
   myTransactions: Transaction[];
 }
 
-const TraderDashboard: React.FC<TraderDashboardProps> = ({ 
-  availableProduce, 
-  myTransactions 
-}) => {
+const TraderDashboard: React.FC<TraderDashboardProps> = ({ availableProduce, myTransactions }) => {
   const [selectedFilter, setSelectedFilter] = useState('all');
   const [showPaymentDetails, setShowPaymentDetails] = useState(false);
 
@@ -89,7 +86,7 @@ const TraderDashboard: React.FC<TraderDashboardProps> = ({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="p-4 space-y-6 pb-24">
       {/* Welcome Section */}
       <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-6 text-white">
         <div className="flex items-center justify-between">

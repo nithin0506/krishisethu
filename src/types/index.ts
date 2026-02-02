@@ -6,6 +6,9 @@ export interface User {
   location: string;
   verified: boolean;
   avatar?: string;
+  documents?: string[];
+  verificationStatus?: 'pending' | 'approved' | 'rejected';
+  submittedAt?: string;
 }
 
 export interface Produce {
@@ -98,4 +101,32 @@ export interface GovernmentScheme {
   benefits: string;
   applicationLink: string;
   image: string;
+}
+
+export interface Dispute {
+  id: string;
+  transactionId: string;
+  type: 'quality' | 'payment' | 'delivery' | 'other';
+  farmerId: string;
+  traderId: string;
+  farmerName: string;
+  traderName: string;
+  amount: number;
+  description: string;
+  status: 'open' | 'investigating' | 'resolved' | 'closed';
+  priority: 'low' | 'medium' | 'high';
+  createdAt: string;
+  resolvedAt?: string;
+  resolution?: string;
+  adminNotes?: string;
+}
+
+export interface PriceUpload {
+  id: string;
+  filename: string;
+  uploadedAt: string;
+  uploadedBy: string;
+  recordsCount: number;
+  status: 'success' | 'failed' | 'processing';
+  errorMessage?: string;
 }

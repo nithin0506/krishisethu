@@ -40,6 +40,10 @@ const translations = {
     'nav.buy': 'Buy',
     'nav.chat': 'Chat',
     'nav.profile': 'Profile',
+    'nav.verification': 'Verification',
+    'nav.disputes': 'Disputes',
+    'nav.prices': 'Prices',
+    'nav.schemes': 'Schemes',
     
     // Auth
     'auth.enterMobile': 'Enter Mobile Number',
@@ -190,6 +194,10 @@ const translations = {
     'nav.buy': 'खरीदें',
     'nav.chat': 'चैट',
     'nav.profile': 'प्रोफ़ाइल',
+    'nav.verification': 'सत्यापन',
+    'nav.disputes': 'विवाद',
+    'nav.prices': 'कीमतें',
+    'nav.schemes': 'योजनाएं',
     
     // Auth
     'auth.enterMobile': 'मोबाइल नंबर दर्ज करें',
@@ -340,6 +348,10 @@ const translations = {
     'nav.buy': 'ಖರೀದಿ',
     'nav.chat': 'ಚಾಟ್',
     'nav.profile': 'ಪ್ರೊಫೈಲ್',
+    'nav.verification': 'ಪರಿಶೀಲನೆ',
+    'nav.disputes': 'ವಿವಾದಗಳು',
+    'nav.prices': 'ಬೆಲೆಗಳು',
+    'nav.schemes': 'ಯೋಜನೆಗಳು',
     
     // Auth
     'auth.enterMobile': 'ಮೊಬೈಲ್ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ',
